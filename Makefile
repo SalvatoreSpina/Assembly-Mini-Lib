@@ -1,35 +1,64 @@
-SRCS		=	./srcs/ft_strlen.s \
-				./srcs/ft_strcpy.s \
-				./srcs/ft_strcmp.s \
-				./srcs/ft_write.s \
-				./srcs/ft_read.s \
-				./srcs/ft_strdup.s
+NAME = libasm.a
+TEST = test
 
-OBJS		=	$(SRCS:.s=.o)
+SRCS = ./srcs/functions/ft_strlen.s \
+		./srcs/functions/ft_strcpy.s \
+		./srcs/functions/ft_strcmp.s \
+		./srcs/functions/ft_write.s \
+		./srcs/functions/ft_read.s \
+		./srcs/functions/ft_strdup.s
 
-NA			=	nasm
-NA_FLAGS	=	-f macho64
-FLAGS 		=	-Wall -Werror -Wextra
-NAME		=	libasm.a
-TEST		=	test
+OBJS =	$(SRCS:.s=.o)
 
-%.o:			%.s
-				$(NA) $(NA_FLAGS) $<
+%.o:	%.s
+	@nasm -f macho64 $<
 
-all:			$(NAME)
+all:	$(NAME)
 
-$(NAME):		$(OBJS)
-				ar rcs $(NAME) $(OBJS)
+$(NAME):$(OBJS)
+	@ar rcs $(NAME) $(OBJS)
 
 clean:
-				rm -rf $(OBJS)
+	@rm -rf $(OBJS)
 
-fclean:			clean
-				rm -rf $(NAME) $(TEST)
+fclean:	clean
+	@rm -rf $(NAME) $(TEST) *.txt
 
-re:				fclean $(NAME)
+re:	@fclean $(NAME)
 
-test:			$(NAME)
-				gcc $(FLAGS) -L. -lasm -o $(TEST) main.c
+test:	$(NAME)
+	@gcc -Wall -Werror -Wextra -L. -lasm -o $(TEST) srcs/main.c
 
-.PHONY:			clean fclean re test
+strlen:
+	@make test
+	@./test 2
+
+strcpy:
+	@make test
+	@./test 4
+
+strcmp:
+	@make test
+	@./test 8
+
+strdup:
+	@make test
+	@./test 16
+
+write:
+	@make test
+	@./test 32
+
+read:
+	@make test
+	@./test 64
+
+lib:
+	@make test
+	@./test 128
+
+leaks:
+	@make test
+	@./test 255
+	
+.PHONY:	clean fclean re test strlen strcpy strdup strcmp write read
