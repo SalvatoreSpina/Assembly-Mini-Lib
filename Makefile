@@ -55,7 +55,7 @@ read:
 
 lib:
 	@make test
-	@./test 128
+	@./test 127
 
 leaks:
 	@make test
