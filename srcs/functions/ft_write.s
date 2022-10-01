@@ -1,5 +1,5 @@
 section .text
-		global _ft_read
+		global _ft_write
 
 _ft_write:
 	mov			r8, rdx				;mov third arg (length) in r8
