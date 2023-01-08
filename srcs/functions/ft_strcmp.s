@@ -2,34 +2,64 @@ section .text
 		global _ft_strcmp
 
 _ft_strcmp:
-	mov		rax, -1					;set i = -1
+	; Initialize i to -1
+	mov		rax, -1
 
-loop:								;while loop
-	inc		rax						;i++
-	mov		cl, byte [rdi + rax]	;cl = s1[i]
-	mov		dl, byte [rsi + rax]	;dl = s2[i]
-	cmp		cl, 0					;compare cl, 0
-	je		end						;jump to end if equals
-	cmp		dl, 0					;if dl is equal to 0
-	je		end						;jump to end if	equals
-	cmp		cl, dl					;compare cl and dl
-	je		loop					;jump to end if equals
-	jmp		end						;jump to end
+loop:
+	; Increment i
+	inc		rax
+	
+	; Load s1[i] into cl
+	mov		cl, byte [rdi + rax]
+	
+	; Load s2[i] into dl
+	mov		dl, byte [rsi + rax]
+	
+	; Check if s1[i] is null terminator
+	cmp		cl, 0
+	
+	; If s1[i] is null terminator, jump to end of loop
+	je		end
+	
+	; Check if s2[i] is null terminator
+	cmp		dl, 0
+	
+	; If s2[i] is null terminator, jump to end of loop
+	je		end
+	
+	; Compare s1[i] and s2[i]
+	cmp		cl, dl
+	
+	; If s1[i] == s2[i], continue loop
+	je		loop
+	
+	; Otherwise, jump to end of loop
+	jmp		end
 
 end:
-	cmp     cl, dl                  ;compare cl, dl
-	je      equal                   ;jump if equals
-	jb      negative                ;jump if less than
-	ja      positive                ;jump if greater than
+	; Compare s1[i] and s2[i]
+	cmp     cl, dl
+	
+	; If s1[i] == s2[i], return 0
+	je      equal
+	
+	; If s1[i] < s2[i], return -1
+	jb      negative
+	
+	; If s1[i] > s2[i], return 1
+	ja      positive
 
 equal:
-	mov		rax, 0                  ;return 0
+	; Return 0
+	mov		rax, 0
 	ret
 
 negative:
-	mov		rax, -1                 ;return -1
+	; Return -1
+	mov		rax, -1
 	ret
 
 positive:
-	mov		rax, 1                  ;return 1
+	; Return 1
+	mov		rax, 1
 	ret
